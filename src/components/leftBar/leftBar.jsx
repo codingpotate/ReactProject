@@ -1,28 +1,29 @@
 import './leftBar.css'
 import IKImageComponent  from "../image/image"
+import { Link } from 'react-router-dom'
 const LeftBar = () => {
     return(
         <div className='leftBar'>
             <div className="menuIcons">
-                <a href="/" className="menuIcon">
+                <Link to ="/" className="menuIcon">
                 <IKImageComponent  path="/general/logo.png" alt ="" className="logo"/>
-                </a>
-                <a href="/" className="menuIcon">
+                </Link>
+                <Link to="/" className="menuIcon">
                 <IKImageComponent  path="/general/home.svg" alt =""/>
-                </a>
-                <a href="/" className="menuIcon">
+                </Link>
+                <Link to="/create" className="menuIcon">
                 <IKImageComponent  path="/general/create.svg" alt =""/>
-                </a>
-                <a href="/" className="menuIcon">
+                </Link>
+                <Link to="/" className="menuIcon">
                 <IKImageComponent  path="/general/updates.svg" alt =""/>
-                </a>
-                <a href="/" className="menuIcon">
+                </Link>
+                <Link to="/" className="menuIcon">
                 <IKImageComponent  path="/general/messages.svg" alt =""/>
-                </a>
+                </Link>
             </div>
-                <a href="/" className="menuIcon">
+                <Link to="/" className="menuIcon">
                 <IKImageComponent  path="/general/settings.svg" alt =""/>
-                </a>
+                </Link>
         </div>
     )
 }

@@ -1,93 +1,34 @@
-import { useState } from 'react'
-import IKImageComponent from '../image/image'
-import './comments.css'
-import EmojiPicker from "emoji-picker-react"
+import "./comments.css";
+import { useQuery } from "@tanstack/react-query";
+import apiRequest from "../../utils/apiRequest";
+import Comment from "./comment";
+import CommentForm from "./commentForm";
 
-const Comments = () => {
+const Comments = ({ id }) => {
 
-    const [open, setOpen] = useState(false);
-    return (
-        <div className='comments'>
-            <div className='commentList'>
-                <span className='commentCount'>5 comments</span>
+  const { isPending, error, data } = useQuery({
+    queryKey: ["comments", id],
+    queryFn: () => apiRequest.get(`/comments/${id}`).then((res) => res.data),
+  });
 
-                <div className='commentScrollArea'>
-                    <div className='comment'>
-                        <IKImageComponent path="/general/noAvatar.png" alt="" />
-                        <div className="commentContent">
-                            <span className='commentUsername'>John Doe</span>
-                            <p className="commentText">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                            </p>
-                            <span className='commentTime'>1h</span>
-                        </div>
-                    </div>
-                    <div className='comment'>
-                        <IKImageComponent path="/general/noAvatar.png" alt="" />
-                        <div className="commentContent">
-                            <span className='commentUsername'>John Doe</span>
-                            <p className="commentText">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                            </p>
-                            <span className='commentTime'>1h</span>
-                        </div>
-                    </div>
-                    <div className='comment'>
-                        <IKImageComponent path="/general/noAvatar.png" alt="" />
-                        <div className="commentContent">
-                            <span className='commentUsername'>John Doe</span>
-                            <p className="commentText">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                            </p>
-                            <span className='commentTime'>1h</span>
-                        </div>
-                    </div>
-                    <div className='comment'>
-                        <IKImageComponent path="/general/noAvatar.png" alt="" />
-                        <div className="commentContent">
-                            <span className='commentUsername'>John Doe</span>
-                            <p className="commentText">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                            </p>
-                            <span className='commentTime'>1h</span>
-                        </div>
-                    </div>
-                    <div className='comment'>
-                        <IKImageComponent path="/general/noAvatar.png" alt="" />
-                        <div className="commentContent">
-                            <span className='commentUsername'>John Doe</span>
-                            <p className="commentText">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                            </p>
-                            <span className='commentTime'>1h</span>
-                        </div>
-                    </div>
-                    <div className='comment'>
-                        <IKImageComponent path="/general/noAvatar.png" alt="" />
-                        <div className="commentContent">
-                            <span className='commentUsername'>John Doe</span>
-                            <p className="commentText">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                            </p>
-                            <span className='commentTime'>1h</span>
-                        </div>
-                    </div>
-                </div>
+  if (isPending) return "Loading...";
 
-                <form className='commentForm'>
-                    <input type="text" placeholder="Add a comment" />
-                    <div className='emoji'>
-                        <div onClick={() => setOpen(prev => !prev)}>😂</div>
-                        {open && (
-                            <div className='emojiPicker'>
-                                <EmojiPicker />
-                            </div>
-                        )}
-                    </div>
-                </form>
-            </div>
-        </div>
-    )
-}
+  if (error) return "An error has occurred: " + error.message;
 
-export default Comments
+  console.log(data);
+
+  return (
+    <div className="comments">
+      <div className="commentList">
+        <span className="commentCount">{data.length === 0 ? "No comments" : data.length + " Comments"}</span>
+        {/* COMMENT */}
+        {data.map((comment) => (
+          <Comment key={comment._id} comment={comment} />
+        ))}
+      </div>
+      <CommentForm id={id}/>
+    </div>
+  );
+};
+
+export default Comments;

@@ -1,15 +1,21 @@
 import './topBar.css'
 import UserButton from '../userButton/userButton'
 import IKImageComponent  from "../image/image"
+import { useNavigate } from 'react-router-dom'
 
 const TopBar = () => {
+    const navigate = useNavigate()
+    const handleSubmit=(e) =>{
+        e.preventDefault();
+        navigate(`/search?search=${e.target[0].value}`)
+    };
     return(
         <div className='topBar'>
-            <div className='search'>
+            <form onSubmit={handleSubmit} className='search'>
             <IKImageComponent  path = "/general/search.svg"/>
             <input type="text" placeholder='Search'/>
                 
-            </div>
+            </form>
             <UserButton/>
         </div>
     )
